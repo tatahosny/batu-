@@ -223,14 +223,39 @@
               
               <div class="academic-supervisors">
                 <div class="academic-supervisor-card" v-for="supervisor in getAcademicSupervisors()" :key="supervisor.id">
-                  <div class="supervisor-header">
-                    <div class="supervisor-name">
-                      <h4>{{ supervisor.name }}</h4>
-                      <span class="supervisor-title">{{ supervisor.title }}</span>
+                  <div class="supervisor-main-info">
+                    <div class="supervisor-photo-container">
+                      <div class="supervisor-photo" :style="{ backgroundImage: `url(${supervisor.photo})` }">
+                        <div v-if="!supervisor.photo" class="photo-placeholder">
+                          <i class="fas fa-user-tie"></i>
+                        </div>
+                      </div>
+                      <div class="photo-upload-hint" v-if="!supervisor.photo">
+                        <i class="fas fa-camera"></i>
+                        <span>إضافة صورة</span>
+                      </div>
                     </div>
-                    <div class="supervisor-office">
-                      <i class="fas fa-door-closed"></i>
-                      {{ supervisor.office }}
+                    
+                    <div class="supervisor-details">
+                      <div class="supervisor-name-title">
+                        <h4>{{ supervisor.name }}</h4>
+                        <span class="supervisor-title">{{ supervisor.title }}</span>
+                      </div>
+                      
+                      <div class="supervisor-office-info">
+                        <div class="office-item">
+                          <i class="fas fa-door-closed"></i>
+                          <span>{{ supervisor.office }}</span>
+                        </div>
+                        <div class="contact-item" v-if="supervisor.email">
+                          <i class="fas fa-envelope"></i>
+                          <span>{{ supervisor.email }}</span>
+                        </div>
+                        <div class="contact-item" v-if="supervisor.phone">
+                          <i class="fas fa-phone"></i>
+                          <span>{{ supervisor.phone }}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
@@ -244,11 +269,9 @@
                     </div>
                   </div>
                   
-                  <div class="supervisor-contact">
-                    <span class="contact-info">
-                      <i class="fas fa-clock"></i>
-                      يرجى الالتزام بمواعيد التواجد
-                    </span>
+                  <div class="supervisor-notes" v-if="supervisor.notes">
+                    <i class="fas fa-info-circle"></i>
+                    <span>{{ supervisor.notes }}</span>
                   </div>
                 </div>
               </div>
@@ -290,15 +313,24 @@
               
               <div class="faculty-members">
                 <div class="faculty-member-card" v-for="member in getFacultyMembers()" :key="member.id">
-                  <div class="member-avatar">
-                    <div class="avatar-placeholder">
-                      <i class="fas fa-user-graduate"></i>
+                  <div class="member-avatar-container">
+                    <div class="member-avatar" :style="{ backgroundImage: `url(${member.photo})` }">
+                      <div v-if="!member.photo" class="avatar-placeholder">
+                        <i class="fas fa-user-graduate"></i>
+                      </div>
+                    </div>
+                    <div class="photo-upload-icon" v-if="!member.photo">
+                      <i class="fas fa-camera"></i>
                     </div>
                   </div>
                   <div class="member-info">
                     <h4>{{ member.name }}</h4>
                     <p class="member-course">{{ member.course }}</p>
                     <p class="member-title">{{ member.title }}</p>
+                    <div class="member-contact" v-if="member.email">
+                      <i class="fas fa-envelope"></i>
+                      <span>{{ member.email }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -451,10 +483,10 @@ const getCurrentSelection = () => {
 
 const getLmsLink = () => {
   const links = {
-    first_year: 'https://classroom.google.com',
-    second_year: 'https://moodle.org',
-    third_year: 'https://github.com',
-    fourth_year: 'https://teams.microsoft.com'
+    first_year: 'https://batechu.com/lms/login',
+    second_year: 'https://batechu.com/lms/login',
+    third_year: 'https://batechu.com/lms/login',
+    fourth_year: 'https://batechu.com/lms/login'
   }
   
   return links[userStore.selectedYear] || 'https://example.com'
@@ -493,7 +525,7 @@ const getSchedules = () => {
   return schedules[userStore.selectedYear] || schedules.first_year
 }
 
-// الإشراف الأكاديمي
+// الإشراف الأكاديمي مع الصور
 const getAcademicSupervisors = () => {
   const supervisors = {
     first_year: [
@@ -502,17 +534,23 @@ const getAcademicSupervisors = () => {
         name: 'ا.م.د/اشرف عبد العزيز طه',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 311',
+        photo: '/images/professors/ashraf-abdelaziz.jpg', // مسار الصورة
+        email: 'ashraf.abdelaziz@university.edu',
+        phone: '010-XXXX-XXXX',
         schedule: [
           { day: 'الأحد', periods: '1,2,7,8' },
           { day: 'الاثنين', periods: '1,2,7,8' },
           { day: 'الثلاثاء', periods: '5,6,7,8' }
-        ]
+        ],
+        notes: 'مشرف عام الفرقة الأولى'
       },
       {
         id: 2,
         name: 'د.هيمن السيد حسن',
         title: 'عضو هيئة تدريس',
         office: 'مكتب 302',
+        photo: '/images/professors/haymen-sayed.jpg',
+        email: 'haymen.sayed@university.edu',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4' },
           { day: 'الاثنين', periods: '5,6,7,8' },
@@ -525,6 +563,9 @@ const getAcademicSupervisors = () => {
         name: 'د.مي محمد',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 302',
+        photo: '/images/professors/may-mohamed.jpg',
+        email: 'may.mohamed@university.edu',
+        phone: '010-XXXX-YYYY',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4' },
           { day: 'الاثنين', periods: '1,2,3,4,5,6' },
@@ -537,6 +578,8 @@ const getAcademicSupervisors = () => {
         name: 'م.امانى السيد الديب',
         title: 'محاضر مساعد',
         office: 'غرفة A102',
+        photo: '/images/professors/amany-sayed.jpg',
+        email: 'amany.sayed@university.edu',
         schedule: [
           { day: 'السبت', periods: '5,6' },
           { day: 'الأحد', periods: '1,2,3,4' },
@@ -549,6 +592,8 @@ const getAcademicSupervisors = () => {
         name: 'م.مصطفى محمد',
         title: 'مساعد تدريس',
         office: 'مكتب 306',
+        photo: '/images/professors/mostafa-mohamed.jpg',
+        email: 'mostafa.mohamed@university.edu',
         schedule: [
           { day: 'الأحد', periods: '7,8' },
           { day: 'الاثنين', periods: '3,4' },
@@ -561,6 +606,8 @@ const getAcademicSupervisors = () => {
         name: 'م.رجب حسن',
         title: 'مساعد تدريس',
         office: 'مكتب 306',
+        photo: '/images/professors/ragab-hassan.jpg',
+        email: 'ragab.hassan@university.edu',
         schedule: [
           { day: 'الاثنين', periods: '3,4' },
           { day: 'الثلاثاء', periods: '5,6,7,8,9,10' }
@@ -571,6 +618,8 @@ const getAcademicSupervisors = () => {
         name: 'م.عبد الفتاح مراد',
         title: 'مساعد تدريس',
         office: 'مكتب 306',
+        photo: '/images/professors/abdel-fattah-murad.jpg',
+        email: 'abdel.fattah@university.edu',
         schedule: [
           { day: 'السبت', periods: '3,4,5,8,9,10' },
           { day: 'الأحد', periods: '1,2,6,7,9,10' },
@@ -585,18 +634,24 @@ const getAcademicSupervisors = () => {
         name: 'د/نهال الازلي',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 210',
+        photo: '/images/professors/nahal-azaly.jpg',
+        email: 'nahal.azaly@university.edu',
+        phone: '010-XXXX-ZZZZ',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4,5,6' },
           { day: 'الاثنين', periods: '1,2,3,4' },
           { day: 'الثلاثاء', periods: '5,6' },
           { day: 'الأربعاء', periods: '1,2,3,4,5,6' }
-        ]
+        ],
+        notes: 'مشرفة عامة الفرقة الثانية'
       },
       {
         id: 2,
         name: 'د/ دينا عبد الحفيظ',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 307',
+        photo: '/images/professors/dina-abdelhafeez.jpg',
+        email: 'dina.abdelhafeez@university.edu',
         schedule: [
           { day: 'الأحد', periods: '5,6,7,8' },
           { day: 'الاثنين', periods: '3,4' }
@@ -607,6 +662,8 @@ const getAcademicSupervisors = () => {
         name: 'د/ بسنت طلبه',
         title: 'عضو هيئة تدريس',
         office: 'مكتب 302',
+        photo: '/images/professors/basant-talab.jpg',
+        email: 'basant.talab@university.edu',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4,5,6' },
           { day: 'الاثنين', periods: '3,4,5,6' },
@@ -619,6 +676,8 @@ const getAcademicSupervisors = () => {
         name: 'م.اسراء محسن',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
+        photo: '/images/professors/esraa-mohsen.jpg',
+        email: 'esraa.mohsen@university.edu',
         schedule: [
           { day: 'الأحد', periods: '5-10' },
           { day: 'الاثنين', periods: '1-2 و 5-6' },
@@ -631,6 +690,8 @@ const getAcademicSupervisors = () => {
         name: 'م.منة الله اشرف',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
+        photo: '/images/professors/menna-allah-ashraf.jpg',
+        email: 'menna.ashraf@university.edu',
         schedule: [
           { day: 'السبت', periods: '3,4,9,10' },
           { day: 'الأحد', periods: '5,6,9,10' },
@@ -642,6 +703,8 @@ const getAcademicSupervisors = () => {
         name: 'م.مصطفى صبحي منسي',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
+        photo: '/images/professors/mostafa-sabry.jpg',
+        email: 'mostafa.sabry@university.edu',
         schedule: [
           { day: 'السبت', periods: '5,6' },
           { day: 'الأحد', periods: 'جميع الفترات' },
@@ -655,6 +718,8 @@ const getAcademicSupervisors = () => {
         name: 'م.اسامة محمد السمنودي',
         title: 'محاضر مساعد',
         office: 'غرفة 114',
+        photo: '/images/professors/osama-samnoudy.jpg',
+        email: 'osama.samnoudy@university.edu',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4' },
           { day: 'الاثنين', periods: '4' },
@@ -683,24 +748,108 @@ const getStudentLists = () => {
   return lists[userStore.selectedYear] || lists.first_year
 }
 
-// أعضاء هيئة التدريس
+// أعضاء هيئة التدريس مع الصور
 const getFacultyMembers = () => {
   const faculty = {
     first_year: [
-      { id: 1, name: 'د/محمد القديم', course: 'Technical English 2', title: 'أستاذ المادة' },
-      { id: 2, name: 'د/محمد الشاذلي', course: 'Mathematics 2', title: 'أستاذ المادة' },
-      { id: 3, name: 'د/أسامة النحاس', course: 'Intro To IOT & Connecting Things', title: 'أستاذ المادة' },
-      { id: 4, name: 'د/بسنت طلبة', course: 'Intro To IOT & Connecting Things', title: 'أستاذة المادة' },
-      { id: 5, name: 'د/هيمن السيد', course: 'Microsoft Office', title: 'أستاذ المادة' },
-      { id: 6, name: 'د/اشرف عبد العزيز', course: 'Cyber Security Essentials', title: 'أستاذ المادة' },
-      { id: 7, name: 'د/غادة', course: 'Programming Essentials in C', title: 'أستاذة المادة' }
+      { 
+        id: 1, 
+        name: 'د/محمد القديم', 
+        course: 'Technical English 2', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/mohamed-elkadeem.jpg',
+        email: 'mohamed.elkadeem@university.edu'
+      },
+      { 
+        id: 2, 
+        name: 'د/محمد الشاذلي', 
+        course: 'Mathematics 2', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/mohamed-elshazly.jpg',
+        email: 'mohamed.elshazly@university.edu'
+      },
+      { 
+        id: 3, 
+        name: 'د/أسامة النحاس', 
+        course: 'Intro To IOT & Connecting Things', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/osama-elnahas.jpg',
+        email: 'osama.elnahas@university.edu'
+      },
+      { 
+        id: 4, 
+        name: 'د/بسنت طلبة', 
+        course: 'Intro To IOT & Connecting Things', 
+        title: 'أستاذة المادة',
+        photo: '/images/professors/basant-talab.jpg',
+        email: 'basant.talab@university.edu'
+      },
+      { 
+        id: 5, 
+        name: 'د/هيمن السيد', 
+        course: 'Microsoft Office', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/haymen-sayed.jpg',
+        email: 'haymen.sayed@university.edu'
+      },
+      { 
+        id: 6, 
+        name: 'د/اشرف عبد العزيز', 
+        course: 'Cyber Security Essentials', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/ashraf-abdelaziz.jpg',
+        email: 'ashraf.abdelaziz@university.edu'
+      },
+      { 
+        id: 7, 
+        name: 'د/غادة', 
+        course: 'Programming Essentials in C', 
+        title: 'أستاذة المادة',
+        photo: '/images/professors/ghada.jpg',
+        email: 'ghada@university.edu'
+      }
     ],
     second_year: [
-      { id: 1, name: 'د/اشرف عبد العزيز', course: 'Web Programming 2', title: 'أستاذ المادة' },
-      { id: 2, name: 'د/رضوى', course: 'Java Programming', title: 'أستاذة المادة' },
-      { id: 3, name: 'د/ايمان شوقى', course: 'Data Structure', title: 'أستاذة المادة' },
-      { id: 4, name: 'د/احمد عبد الفتاح', course: 'CCNA', title: 'أستاذ المادة' },
-      { id: 5, name: 'د/على عبد الفتاح', course: 'DataBase Programming', title: 'أستاذ المادة' }
+      { 
+        id: 1, 
+        name: 'د/اشرف عبد العزيز', 
+        course: 'Web Programming 2', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/ashraf-abdelaziz.jpg',
+        email: 'ashraf.abdelaziz@university.edu'
+      },
+      { 
+        id: 2, 
+        name: 'د/رضوى', 
+        course: 'Java Programming', 
+        title: 'أستاذة المادة',
+        photo: '/images/professors/radwa.jpg',
+        email: 'radwa@university.edu'
+      },
+      { 
+        id: 3, 
+        name: 'د/ايمان شوقى', 
+        course: 'Data Structure', 
+        title: 'أستاذة المادة',
+        photo: '/images/professors/eman-shawky.jpg',
+        email: 'eman.shawky@university.edu'
+      },
+      { 
+        id: 4, 
+        name: 'د/احمد عبد الفتاح', 
+        course: 'CCNA', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/ahmed-abdelfattah.jpg',
+        email: 'ahmed.abdelfattah@university.edu'
+      },
+      { 
+        id: 5, 
+        name: 'د/على عبد الفتاح', 
+        course: 'DataBase Programming', 
+        title: 'أستاذ المادة',
+        photo: '/images/professors/ali-abdelfattah.jpg',
+        email: 'ali.abdelfattah@university.edu'
+      }
     ]
   }
   
@@ -1278,48 +1427,141 @@ const goHome = () => {
 .academic-supervisors {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
 }
 
 .academic-supervisor-card {
   background: rgba(46, 204, 113, 0.05);
   border: 1px solid rgba(46, 204, 113, 0.2);
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 25px;
+  transition: all 0.3s ease;
 }
 
-.supervisor-header {
+.academic-supervisor-card:hover {
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.1);
+}
+
+.supervisor-main-info {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(46, 204, 113, 0.1);
+  gap: 25px;
+  margin-bottom: 20px;
 }
 
-.supervisor-name h4 {
+.supervisor-photo-container {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.supervisor-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f8f9fa;
+  border: 2px solid #2ecc71;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .supervisor-photo {
+  background-color: #2c3e50;
+}
+
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  font-size: 48px;
+}
+
+.photo-upload-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px;
+  font-size: 12px;
+  text-align: center;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.photo-upload-hint:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.supervisor-details {
+  flex: 1;
+}
+
+.supervisor-name-title {
+  margin-bottom: 20px;
+}
+
+.supervisor-name-title h4 {
   color: var(--primary-color);
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 22px;
 }
 
 .supervisor-title {
-  color: #2ecc71;
+  display: inline-block;
+  background: #2ecc71;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
 }
 
-.supervisor-office {
-  color: var(--text-color);
-  opacity: 0.9;
-  font-size: 14px;
+.supervisor-office-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.office-item, .contact-item {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
+  color: var(--text-color);
+}
+
+.office-item i, .contact-item i {
+  color: #2ecc71;
+  width: 20px;
+  text-align: center;
+}
+
+.supervisor-schedule {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.dark-mode .supervisor-schedule {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .supervisor-schedule h5 {
   color: var(--primary-color);
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1327,20 +1569,23 @@ const goHome = () => {
 
 .schedule-days {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
 }
 
 .schedule-day {
   display: flex;
   justify-content: space-between;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 6px;
+  align-items: center;
+  padding: 12px 15px;
+  background: rgba(46, 204, 113, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
-.dark-mode .schedule-day {
-  background: rgba(255, 255, 255, 0.1);
+.schedule-day:hover {
+  background: rgba(46, 204, 113, 0.15);
+  transform: translateY(-2px);
 }
 
 .day-name {
@@ -1350,22 +1595,30 @@ const goHome = () => {
 
 .day-periods {
   color: #2ecc71;
-  font-weight: 600;
-}
-
-.supervisor-contact {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(46, 204, 113, 0.1);
-}
-
-.contact-info {
-  color: var(--text-color);
-  opacity: 0.8;
+  font-weight: 700;
+  background: white;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 14px;
+}
+
+.dark-mode .day-periods {
+  background: #2c3e50;
+}
+
+.supervisor-notes {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 12px 15px;
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 8px;
+  color: #3498db;
+  font-size: 14px;
+}
+
+.supervisor-notes i {
+  font-size: 16px;
 }
 
 /* محتوى قوائم الطلاب */
@@ -1481,40 +1734,83 @@ const goHome = () => {
 
 .faculty-members {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .faculty-member-card {
   background: rgba(243, 156, 18, 0.05);
   border: 1px solid rgba(243, 156, 18, 0.2);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 15px;
   transition: all 0.3s ease;
 }
 
 .faculty-member-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(243, 156, 18, 0.15);
 }
 
-.member-avatar {
+.member-avatar-container {
+  position: relative;
   flex-shrink: 0;
 }
 
+.member-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f8f9fa;
+  border: 3px solid #f39c12;
+}
+
+.dark-mode .member-avatar {
+  background-color: #2c3e50;
+}
+
 .avatar-placeholder {
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f39c12, #d35400);
+  color: white;
+  font-size: 28px;
+}
+
+.photo-upload-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
   background: #f39c12;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 24px;
+  font-size: 12px;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .photo-upload-icon {
+  border-color: #2c3e50;
+}
+
+.photo-upload-icon:hover {
+  background: #d35400;
+  transform: scale(1.1);
 }
 
 .member-info {
@@ -1537,6 +1833,20 @@ const goHome = () => {
 .member-title {
   color: #f39c12;
   font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.member-contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-color);
+  opacity: 0.8;
+  font-size: 12px;
+}
+
+.member-contact i {
+  color: #f39c12;
 }
 
 /* محتوى الدورات التدريبية */
@@ -1743,18 +2053,23 @@ const goHome = () => {
     grid-template-columns: 1fr;
   }
   
-  .schedule-days {
-    grid-template-columns: 1fr;
-  }
-  
   .academic-supervisor-card {
     padding: 15px;
   }
   
-  .supervisor-header {
+  .supervisor-main-info {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    gap: 15px;
+  }
+  
+  .supervisor-photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+  
+  .schedule-days {
+    grid-template-columns: 1fr;
   }
   
   .instruction-item {
@@ -1765,6 +2080,40 @@ const goHome = () => {
   
   .instruction-icon {
     margin-bottom: 15px;
+  }
+  
+  .faculty-member-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .member-info {
+    text-align: center;
+  }
+  
+  .member-contact {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .supervisor-photo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .academic-supervisor-card {
+    padding: 12px;
+  }
+  
+  .faculty-member-card {
+    padding: 15px;
+  }
+  
+  .member-avatar {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>
