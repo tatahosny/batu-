@@ -14,8 +14,8 @@
   },
  
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.4.0",
-    "vite": "^5.0.0" // أو "^4.6.0" على الأقل
+    "@vitejs/plugin-vue": "^4.4.0", // غير إلى إصدار أقدم
+    "vite": "^4.5.14"
   }
 }
   "engines": {
