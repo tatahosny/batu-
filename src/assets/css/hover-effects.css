@@ -1,0 +1,1307 @@
+/* Hover Effects Library */
+
+/* Grow */
+.hvr-grow {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  transform: scale(1.1);
+}
+
+/* Shrink */
+.hvr-shrink {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-shrink:hover,
+.hvr-shrink:focus,
+.hvr-shrink:active {
+  transform: scale(0.9);
+}
+
+/* Pulse */
+@keyframes hvr-pulse {
+  25% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(0.9);
+  }
+}
+
+.hvr-pulse {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-pulse:hover,
+.hvr-pulse:focus,
+.hvr-pulse:active {
+  animation: hvr-pulse 1s infinite;
+}
+
+/* Pulse Grow */
+@keyframes hvr-pulse-grow {
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.hvr-pulse-grow {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-pulse-grow:hover,
+.hvr-pulse-grow:focus,
+.hvr-pulse-grow:active {
+  animation: hvr-pulse-grow 0.3s infinite alternate;
+}
+
+/* Pulse Shrink */
+@keyframes hvr-pulse-shrink {
+  to {
+    transform: scale(0.9);
+  }
+}
+
+.hvr-pulse-shrink {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-pulse-shrink:hover,
+.hvr-pulse-shrink:focus,
+.hvr-pulse-shrink:active {
+  animation: hvr-pulse-shrink 0.3s infinite alternate;
+}
+
+/* Push */
+@keyframes hvr-push {
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hvr-push {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-push:hover,
+.hvr-push:focus,
+.hvr-push:active {
+  animation: hvr-push 0.3s 1;
+}
+
+/* Pop */
+@keyframes hvr-pop {
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.hvr-pop {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-pop:hover,
+.hvr-pop:focus,
+.hvr-pop:active {
+  animation: hvr-pop 0.3s 1;
+}
+
+/* Bounce In */
+.hvr-bounce-in {
+  transition: all 0.5s cubic-bezier(0.47, 2.02, 0.31, -0.36);
+}
+
+.hvr-bounce-in:hover,
+.hvr-bounce-in:focus,
+.hvr-bounce-in:active {
+  transform: scale(1.2);
+}
+
+/* Bounce Out */
+.hvr-bounce-out {
+  transition: all 0.5s cubic-bezier(0.47, 2.02, 0.31, -0.36);
+}
+
+.hvr-bounce-out:hover,
+.hvr-bounce-out:focus,
+.hvr-bounce-out:active {
+  transform: scale(0.8);
+}
+
+/* Rotate */
+.hvr-rotate {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-rotate:hover,
+.hvr-rotate:focus,
+.hvr-rotate:active {
+  transform: rotate(15deg);
+}
+
+/* Grow Rotate */
+.hvr-grow-rotate {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-grow-rotate:hover,
+.hvr-grow-rotate:focus,
+.hvr-grow-rotate:active {
+  transform: scale(1.1) rotate(12deg);
+}
+
+/* Float */
+.hvr-float {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-float:hover,
+.hvr-float:focus,
+.hvr-float:active {
+  transform: translateY(-10px);
+}
+
+/* Sink */
+.hvr-sink {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-sink:hover,
+.hvr-sink:focus,
+.hvr-sink:active {
+  transform: translateY(10px);
+}
+
+/* Bob */
+@keyframes hvr-bob {
+  0% {
+    transform: translateY(-8px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes hvr-bob-float {
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+.hvr-bob {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-bob:hover,
+.hvr-bob:focus,
+.hvr-bob:active {
+  animation: hvr-bob 1s infinite;
+}
+
+/* Hang */
+@keyframes hvr-hang {
+  0% {
+    transform: translateY(8px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes hvr-hang-sink {
+  100% {
+    transform: translateY(8px);
+  }
+}
+
+.hvr-hang {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-hang:hover,
+.hvr-hang:focus,
+.hvr-hang:active {
+  animation: hvr-hang 2s infinite;
+}
+
+/* Skew */
+.hvr-skew {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-skew:hover,
+.hvr-skew:focus,
+.hvr-skew:active {
+  transform: skew(-10deg);
+}
+
+/* Skew Forward */
+.hvr-skew-forward {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-skew-forward:hover,
+.hvr-skew-forward:focus,
+.hvr-skew-forward:active {
+  transform: skew(-15deg);
+}
+
+/* Skew Backward */
+.hvr-skew-backward {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-skew-backward:hover,
+.hvr-skew-backward:focus,
+.hvr-skew-backward:active {
+  transform: skew(15deg);
+}
+
+/* Forward */
+.hvr-forward {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-forward:hover,
+.hvr-forward:focus,
+.hvr-forward:active {
+  transform: translateX(10px);
+}
+
+/* Backward */
+.hvr-backward {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-backward:hover,
+.hvr-backward:focus,
+.hvr-backward:active {
+  transform: translateX(-10px);
+}
+
+/* Wobble Vertical */
+@keyframes hvr-wobble-vertical {
+  16.65% {
+    transform: translateY(8px);
+  }
+  33.3% {
+    transform: translateY(-6px);
+  }
+  49.95% {
+    transform: translateY(4px);
+  }
+  66.6% {
+    transform: translateY(-2px);
+  }
+  83.25% {
+    transform: translateY(1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.hvr-wobble-vertical {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-wobble-vertical:hover,
+.hvr-wobble-vertical:focus,
+.hvr-wobble-vertical:active {
+  animation: hvr-wobble-vertical 1s 1;
+}
+
+/* Wobble Horizontal */
+@keyframes hvr-wobble-horizontal {
+  16.65% {
+    transform: translateX(8px);
+  }
+  33.3% {
+    transform: translateX(-6px);
+  }
+  49.95% {
+    transform: translateX(4px);
+  }
+  66.6% {
+    transform: translateX(-2px);
+  }
+  83.25% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.hvr-wobble-horizontal {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-wobble-horizontal:hover,
+.hvr-wobble-horizontal:focus,
+.hvr-wobble-horizontal:active {
+  animation: hvr-wobble-horizontal 1s 1;
+}
+
+/* Buzz */
+@keyframes hvr-buzz {
+  50% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  100% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+}
+
+.hvr-buzz {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-buzz:hover,
+.hvr-buzz:focus,
+.hvr-buzz:active {
+  animation: hvr-buzz 0.15s infinite;
+}
+
+/* Buzz Out */
+@keyframes hvr-buzz-out {
+  10% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  20% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  40% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(2px) rotate(1deg);
+  }
+  60% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  70% {
+    transform: translateX(2px) rotate(1deg);
+  }
+  80% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateX(1px) rotate(0);
+  }
+  100% {
+    transform: translateX(-1px) rotate(0);
+  }
+}
+
+.hvr-buzz-out {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-buzz-out:hover,
+.hvr-buzz-out:focus,
+.hvr-buzz-out:active {
+  animation: hvr-buzz-out 0.75s 1;
+}
+
+/* Glow */
+.hvr-glow {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-glow:hover,
+.hvr-glow:focus,
+.hvr-glow:active {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+/* Shadow */
+.hvr-shadow {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hvr-shadow:hover,
+.hvr-shadow:focus,
+.hvr-shadow:active {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Float Shadow */
+.hvr-float-shadow {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hvr-float-shadow:hover,
+.hvr-float-shadow:focus,
+.hvr-float-shadow:active {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Radial Out */
+.hvr-radial-out {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-radial-out:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.hvr-radial-out:hover:before,
+.hvr-radial-out:focus:before,
+.hvr-radial-out:active:before {
+  width: 300%;
+  height: 300%;
+}
+
+/* Radial In */
+.hvr-radial-in {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-radial-in:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.hvr-radial-in:hover:before,
+.hvr-radial-in:focus:before,
+.hvr-radial-in:active:before {
+  width: 0;
+  height: 0;
+}
+
+/* Sweep To Right */
+.hvr-sweep-to-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-sweep-to-right:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.6s;
+}
+
+.hvr-sweep-to-right:hover:before,
+.hvr-sweep-to-right:focus:before,
+.hvr-sweep-to-right:active:before {
+  width: 100%;
+}
+
+/* Sweep To Left */
+.hvr-sweep-to-left {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-sweep-to-left:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.6s;
+}
+
+.hvr-sweep-to-left:hover:before,
+.hvr-sweep-to-left:focus:before,
+.hvr-sweep-to-left:active:before {
+  width: 100%;
+}
+
+/* Sweep To Bottom */
+.hvr-sweep-to-bottom {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-sweep-to-bottom:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: height 0.6s;
+}
+
+.hvr-sweep-to-bottom:hover:before,
+.hvr-sweep-to-bottom:focus:before,
+.hvr-sweep-to-bottom:active:before {
+  height: 100%;
+}
+
+/* Sweep To Top */
+.hvr-sweep-to-top {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-sweep-to-top:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: height 0.6s;
+}
+
+.hvr-sweep-to-top:hover:before,
+.hvr-sweep-to-top:focus:before,
+.hvr-sweep-to-top:active:before {
+  height: 100%;
+}
+
+/* Bounce To Right */
+.hvr-bounce-to-right {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-bounce-to-right:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hvr-bounce-to-right:hover:before,
+.hvr-bounce-to-right:focus:before,
+.hvr-bounce-to-right:active:before {
+  width: 100%;
+}
+
+/* Bounce To Left */
+.hvr-bounce-to-left {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-bounce-to-left:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hvr-bounce-to-left:hover:before,
+.hvr-bounce-to-left:focus:before,
+.hvr-bounce-to-left:active:before {
+  width: 100%;
+}
+
+/* Bounce To Bottom */
+.hvr-bounce-to-bottom {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-bounce-to-bottom:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: height 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hvr-bounce-to-bottom:hover:before,
+.hvr-bounce-to-bottom:focus:before,
+.hvr-bounce-to-bottom:active:before {
+  height: 100%;
+}
+
+/* Bounce To Top */
+.hvr-bounce-to-top {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-bounce-to-top:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: height 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hvr-bounce-to-top:hover:before,
+.hvr-bounce-to-top:focus:before,
+.hvr-bounce-to-top:active:before {
+  height: 100%;
+}
+
+/* Border Fade */
+.hvr-border-fade {
+  transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
+}
+
+.hvr-border-fade:hover,
+.hvr-border-fade:focus,
+.hvr-border-fade:active {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Hollow */
+.hvr-hollow {
+  transition: all 0.3s ease-in-out;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.hvr-hollow:hover,
+.hvr-hollow:focus,
+.hvr-hollow:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Trim */
+.hvr-trim {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-trim:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hvr-trim:hover:before,
+.hvr-trim:focus:before,
+.hvr-trim:active:before {
+  opacity: 1;
+}
+
+/* Ripple Out */
+@keyframes hvr-ripple-out {
+  100% {
+    top: -12px;
+    right: -12px;
+    bottom: -12px;
+    left: -12px;
+    opacity: 0;
+  }
+}
+
+.hvr-ripple-out {
+  position: relative;
+}
+
+.hvr-ripple-out:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 6px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  animation: hvr-ripple-out 0.6s 1;
+  opacity: 0;
+}
+
+.hvr-ripple-out:hover:before,
+.hvr-ripple-out:focus:before,
+.hvr-ripple-out:active:before {
+  animation: hvr-ripple-out 0.6s 1;
+}
+
+/* Ripple In */
+@keyframes hvr-ripple-in {
+  100% {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 1;
+  }
+}
+
+.hvr-ripple-in {
+  position: relative;
+}
+
+.hvr-ripple-in:before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  bottom: -12px;
+  left: -12px;
+  border: 6px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  animation: hvr-ripple-in 0.6s 1;
+  opacity: 0;
+}
+
+.hvr-ripple-in:hover:before,
+.hvr-ripple-in:focus:before,
+.hvr-ripple-in:active:before {
+  animation: hvr-ripple-in 0.6s 1;
+}
+
+/* Outline Out */
+.hvr-outline-out {
+  position: relative;
+}
+
+.hvr-outline-out:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s;
+}
+
+.hvr-outline-out:hover:before,
+.hvr-outline-out:focus:before,
+.hvr-outline-out:active:before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Outline In */
+.hvr-outline-in {
+  position: relative;
+}
+
+.hvr-outline-in:before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  opacity: 0;
+  transform: scale(1.2);
+  transition: all 0.3s;
+}
+
+.hvr-outline-in:hover:before,
+.hvr-outline-in:focus:before,
+.hvr-outline-in:active:before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Round Corners */
+.hvr-round-corners {
+  transition: all 0.3s ease-in-out;
+}
+
+.hvr-round-corners:hover,
+.hvr-round-corners:focus,
+.hvr-round-corners:active {
+  border-radius: 1em;
+}
+
+/* Underline From Left */
+.hvr-underline-from-left {
+  position: relative;
+}
+
+.hvr-underline-from-left:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: width 0.3s;
+}
+
+.hvr-underline-from-left:hover:before,
+.hvr-underline-from-left:focus:before,
+.hvr-underline-from-left:active:before {
+  width: 100%;
+}
+
+/* Underline From Center */
+.hvr-underline-from-center {
+  position: relative;
+}
+
+.hvr-underline-from-center:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s;
+}
+
+.hvr-underline-from-center:hover:before,
+.hvr-underline-from-center:focus:before,
+.hvr-underline-from-center:active:before {
+  width: 100%;
+  left: 0;
+}
+
+/* Overline From Left */
+.hvr-overline-from-left {
+  position: relative;
+}
+
+.hvr-overline-from-left:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: width 0.3s;
+}
+
+.hvr-overline-from-left:hover:before,
+.hvr-overline-from-left:focus:before,
+.hvr-overline-from-left:active:before {
+  width: 100%;
+}
+
+/* Overline From Center */
+.hvr-overline-from-center {
+  position: relative;
+}
+
+.hvr-overline-from-center:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s;
+}
+
+.hvr-overline-from-center:hover:before,
+.hvr-overline-from-center:focus:before,
+.hvr-overline-from-center:active:before {
+  width: 100%;
+  left: 0;
+}
+
+/* Reveal */
+.hvr-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-reveal:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(100%);
+  transition: transform 0.6s;
+}
+
+.hvr-reveal:hover:before,
+.hvr-reveal:focus:before,
+.hvr-reveal:active:before {
+  transform: translateY(0);
+}
+
+/* Underline Reveal */
+.hvr-underline-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-underline-reveal:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.hvr-underline-reveal:hover:before,
+.hvr-underline-reveal:focus:before,
+.hvr-underline-reveal:active:before {
+  transform: translateX(0);
+}
+
+/* Overline Reveal */
+.hvr-overline-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.hvr-overline-reveal:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateX(100%);
+  transition: transform 0.6s;
+}
+
+.hvr-overline-reveal:hover:before,
+.hvr-overline-reveal:focus:before,
+.hvr-overline-reveal:active:before {
+  transform: translateX(0);
+}
+
+/* Icon Forward */
+.hvr-icon-forward .hvr-icon {
+  transition: transform 0.3s;
+}
+
+.hvr-icon-forward:hover .hvr-icon,
+.hvr-icon-forward:focus .hvr-icon,
+.hvr-icon-forward:active .hvr-icon {
+  transform: translateX(4px);
+}
+
+/* Icon Back */
+.hvr-icon-back .hvr-icon {
+  transition: transform 0.3s;
+}
+
+.hvr-icon-back:hover .hvr-icon,
+.hvr-icon-back:focus .hvr-icon,
+.hvr-icon-back:active .hvr-icon {
+  transform: translateX(-4px);
+}
+
+/* Icon Down */
+.hvr-icon-down .hvr-icon {
+  transition: transform 0.3s;
+}
+
+.hvr-icon-down:hover .hvr-icon,
+.hvr-icon-down:focus .hvr-icon,
+.hvr-icon-down:active .hvr-icon {
+  transform: translateY(4px);
+}
+
+/* Icon Up */
+.hvr-icon-up .hvr-icon {
+  transition: transform 0.3s;
+}
+
+.hvr-icon-up:hover .hvr-icon,
+.hvr-icon-up:focus .hvr-icon,
+.hvr-icon-up:active .hvr-icon {
+  transform: translateY(-4px);
+}
+
+/* Icon Spin */
+.hvr-icon-spin .hvr-icon {
+  transition: transform 0.6s;
+}
+
+.hvr-icon-spin:hover .hvr-icon,
+.hvr-icon-spin:focus .hvr-icon,
+.hvr-icon-spin:active .hvr-icon {
+  transform: rotate(360deg);
+}
+
+/* Icon Grow */
+.hvr-icon-grow .hvr-icon {
+  transition: transform 0.3s;
+}
+
+.hvr-icon-grow:hover .hvr-icon,
+.hvr-icon-grow:focus .hvr-icon,
+.hvr-icon-grow:active .hvr-icon {
+  transform: scale(1.3);
+}
+
+/* Icon Shrink */
+.hvr-icon-shrink .hvr-icon {
+  transition: transform 0.3s;
+}
+
+.hvr-icon-shrink:hover .hvr-icon,
+.hvr-icon-shrink:focus .hvr-icon,
+.hvr-icon-shrink:active .hvr-icon {
+  transform: scale(0.8);
+}
+
+/* Icon Pulse */
+@keyframes hvr-icon-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hvr-icon-pulse .hvr-icon {
+  animation: hvr-icon-pulse 1s infinite;
+}
+
+.hvr-icon-pulse:hover .hvr-icon,
+.hvr-icon-pulse:focus .hvr-icon,
+.hvr-icon-pulse:active .hvr-icon {
+  animation: hvr-icon-pulse 1s infinite;
+}
+
+/* Icon Bob */
+@keyframes hvr-icon-bob {
+  0% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-6px);
+  }
+}
+
+.hvr-icon-bob .hvr-icon {
+  animation: hvr-icon-bob 2s infinite;
+}
+
+.hvr-icon-bob:hover .hvr-icon,
+.hvr-icon-bob:focus .hvr-icon,
+.hvr-icon-bob:active .hvr-icon {
+  animation: hvr-icon-bob 2s infinite;
+}
+
+/* Icon Hang */
+@keyframes hvr-icon-hang {
+  0% {
+    transform: translateY(6px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(6px);
+  }
+}
+
+.hvr-icon-hang .hvr-icon {
+  animation: hvr-icon-hang 2s infinite;
+}
+
+.hvr-icon-hang:hover .hvr-icon,
+.hvr-icon-hang:focus .hvr-icon,
+.hvr-icon-hang:active .hvr-icon {
+  animation: hvr-icon-hang 2s infinite;
+}
+
+/* Icon Wobble Horizontal */
+@keyframes hvr-icon-wobble-horizontal {
+  16.65% {
+    transform: translateX(6px);
+  }
+  33.3% {
+    transform: translateX(-4px);
+  }
+  49.95% {
+    transform: translateX(3px);
+  }
+  66.6% {
+    transform: translateX(-2px);
+  }
+  83.25% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.hvr-icon-wobble-horizontal .hvr-icon {
+  animation: hvr-icon-wobble-horizontal 1s infinite;
+}
+
+.hvr-icon-wobble-horizontal:hover .hvr-icon,
+.hvr-icon-wobble-horizontal:focus .hvr-icon,
+.hvr-icon-wobble-horizontal:active .hvr-icon {
+  animation: hvr-icon-wobble-horizontal 1s infinite;
+}
+
+/* Icon Wobble Vertical */
+@keyframes hvr-icon-wobble-vertical {
+  16.65% {
+    transform: translateY(6px);
+  }
+  33.3% {
+    transform: translateY(-4px);
+  }
+  49.95% {
+    transform: translateY(3px);
+  }
+  66.6% {
+    transform: translateY(-2px);
+  }
+  83.25% {
+    transform: translateY(1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.hvr-icon-wobble-vertical .hvr-icon {
+  animation: hvr-icon-wobble-vertical 1s infinite;
+}
+
+.hvr-icon-wobble-vertical:hover .hvr-icon,
+.hvr-icon-wobble-vertical:focus .hvr-icon,
+.hvr-icon-wobble-vertical:active .hvr-icon {
+  animation: hvr-icon-wobble-vertical 1s infinite;
+}
+
+/* Icon Buzz */
+@keyframes hvr-icon-buzz {
+  50% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  100% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+}
+
+.hvr-icon-buzz .hvr-icon {
+  animation: hvr-icon-buzz 0.15s infinite;
+}
+
+.hvr-icon-buzz:hover .hvr-icon,
+.hvr-icon-buzz:focus .hvr-icon,
+.hvr-icon-buzz:active .hvr-icon {
+  animation: hvr-icon-buzz 0.15s infinite;
+}
+
+/* Icon Buzz Out */
+@keyframes hvr-icon-buzz-out {
+  10% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  20% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateX(3px) rotate(2deg);
+  }
+  40% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  50% {
+    transform: translateX(2px) rotate(1deg);
+  }
+  60% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  70% {
+    transform: translateX(2px) rotate(1deg);
+  }
+  80% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateX(1px) rotate(0);
+  }
+  100% {
+    transform: translateX(-1px) rotate(0);
+  }
+}
+
+.hvr-icon-buzz-out .hvr-icon {
+  animation: hvr-icon-buzz-out 0.75s 1;
+}
+
+.hvr-icon-buzz-out:hover .hvr-icon,
+.hvr-icon-buzz-out:focus .hvr-icon,
+.hvr-icon-buzz-out:active .hvr-icon {
+  animation: hvr-icon-buzz-out 0.75s 1;
+}
