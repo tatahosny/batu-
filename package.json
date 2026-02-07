@@ -13,8 +13,8 @@
     "pinia": "^2.1.6"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.4.0",
-    "vite": "^4.4.9"
+    "@vitejs/plugin-vue": "^4.4.0", // غير هذا
+    "vite": "^4.5.14" // وغير هذا
   },
   "engines": {
     "node": ">=18.0.0",
