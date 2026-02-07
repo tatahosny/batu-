@@ -1,11 +1,10 @@
 {
   "builds": [
     {
-      "src": "package.json",
+      "src": "vite.config.js",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
-        "installCommand": "npm install --legacy-peer-deps"
+        "distDir": "dist"
       }
     }
   ],
@@ -15,7 +14,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "/"
     }
-  ]
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite"
 }
