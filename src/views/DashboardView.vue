@@ -99,13 +99,18 @@
         </div>
 
         <!-- محتوى القائمة المختارة -->
-        <div v-if="selectedMenu" class="menu-content-section">
+        <div 
+          v-if="selectedMenu" 
+          class="menu-content-section"
+          ref="contentSection"
+          :id="'content-' + selectedMenu.id"
+        >
           <div class="content-header">
             <h2>
               <i :class="selectedMenu.icon || 'fas fa-th-list'"></i>
               {{ selectedMenu.title }}
             </h2>
-            <button @click="selectedMenu = null" class="close-btn">
+            <button @click="closeContent" class="close-btn">
               <i class="fas fa-times"></i>
             </button>
           </div>
@@ -176,10 +181,14 @@
                 <div class="pdf-header">
                   <h4>{{ selectedSchedule.name }}</h4>
                   <div class="pdf-actions">
-                    <button @click="downloadPDF(selectedSchedule)" class="download-pdf-btn">
+                    <a :href="selectedSchedule.downloadUrl" download class="download-pdf-btn" target="_blank">
                       <i class="fas fa-download"></i>
                       تحميل PDF
-                    </button>
+                    </a>
+                    <a :href="selectedSchedule.viewUrl" class="view-pdf-btn" target="_blank" v-if="selectedSchedule.viewUrl">
+                      <i class="fas fa-eye"></i>
+                      عرض مباشر
+                    </a>
                   </div>
                 </div>
                 <div class="pdf-preview">
@@ -267,14 +276,13 @@
               
               <div v-if="userStore.selectedYear === 'first_year'" class="telegram-link-section">
                 <p>يمكنك الانضمام إلى مجموعة التليجرام الخاصة بالفرقة:</p>
-                <a href="https://t.me/first_year_group" target="_blank" class="telegram-btn">
+                <a href="https://t.me/+g8IF6GMRg90yM2Rk" target="_blank" class="telegram-btn">
                   <i class="fab fa-telegram"></i>
                   انضم إلى مجموعة التليجرام
                 </a>
               </div>
               
               <div class="students-pdf-section">
-                <p>يمكنك أيضًا تحميل قائمة الطلاب كملف PDF:</p>
                 <div class="students-pdf-card" v-for="list in getStudentLists()" :key="list.id">
                   <div class="pdf-card-icon">
                     <i class="fas fa-users"></i>
@@ -284,9 +292,9 @@
                     <p>{{ list.description }}</p>
                     <span class="pdf-meta">{{ list.date }} • {{ list.size }} • {{ list.students }} طالب</span>
                   </div>
-                  <button @click="downloadStudentList(list)" class="pdf-download-btn">
+                  <a :href="list.downloadUrl" download class="pdf-download-btn">
                     <i class="fas fa-download"></i>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -417,11 +425,21 @@
         </div>
       </div>
     </footer>
+    
+    <!-- زر العودة للأعلى -->
+    <button 
+      v-if="showScrollTop" 
+      @click="scrollToTop" 
+      class="scroll-top-btn"
+      :class="{ visible: showScrollTop }"
+    >
+      <i class="fas fa-chevron-up"></i>
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import ThemeToggle from '../components/Welcome/ThemeToggle.vue'
@@ -430,6 +448,8 @@ const router = useRouter()
 const userStore = useUserStore()
 const selectedMenu = ref(null)
 const selectedSchedule = ref(null)
+const contentSection = ref(null)
+const showScrollTop = ref(false)
 
 // قائمة خدمة الإشراف
 const serviceSupervision = {
@@ -473,7 +493,7 @@ const getLmsLink = () => {
 }
 
 const getComplaintLink = () => {
-  return 'https://forms.google.com/complaints-form'
+  return 'https://sam.shuruhatik.com/student/complaints'
 }
 
 const getMenuDescription = (menuId) => {
@@ -538,7 +558,7 @@ const getServiceSupervisors = () => {
         id: 1,
         name: 'م/ محمود الغنيمي',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: غرفة 313',
+        office: 'غرفة 313',
         photo: '/images/supervisors/mahmoud-elghonimy.png'
       },
       {
@@ -561,25 +581,81 @@ const getServiceSupervisors = () => {
   return supervisors[userStore.selectedYear] || supervisors.first_year
 }
 
-// الجداول الدراسية
+// الجداول الدراسية - محدثة مع مسارات حقيقية
 const getSchedules = () => {
+  const basePath = '/pdfs/schedules/';
+  
   const schedules = {
     first_year: [
-      { id: 1, name: 'جدول الفصل الأول', description: 'جدول المحاضرات النظري والعملية', date: 'ديسمبر 2024', size: '2.4 MB' },
-      { id: 2, name: 'جدول الاختبارات', description: 'مواعيد الاختبارات الشهرية', date: 'يناير 2025', size: '1.8 MB' }
+      { 
+        id: 1, 
+        name: 'جدول المحاضرات والسكاشن - الفرقة الأولى', 
+        description: 'جدول المحاضرات النظري والعملية للفرقة الأولى', 
+        date: 'ديسمبر 2024', 
+        size: '2.4 MB',
+        downloadUrl: `${basePath}first_year/schedule_2024.pdf`,
+        viewUrl: `${basePath}first_year/schedule_2024.pdf`
+      }
     ],
     second_year: [
-      { id: 1, name: 'جدول التخصصات', description: 'جدول مواد التخصص للفرقة الثانية', date: 'ديسمبر 2024', size: '3.1 MB' },
-      { id: 2, name: 'جدول المعامل', description: 'مواعيد المعامل العملية', date: 'يناير 2025', size: '2.2 MB' }
+      { 
+        id: 1, 
+        name: 'جدول المحاضرات والسكاشن - الفرقة الثانية', 
+        description: 'جدول مواد الفرقة الثانية', 
+        date: 'ديسمبر 2024', 
+        size: '3.1 MB',
+        downloadUrl: `${basePath}second_year/schedule_2024.pdf`,
+        viewUrl: `${basePath}second_year/schedule_2024.pdf`
+      }
     ],
     third_year: [
-      { id: 1, name: 'جدول النيتورك', description: 'جدول تخصص النيتورك', date: 'ديسمبر 2024', size: '2.8 MB' },
-      { id: 2, name: 'جدول السوفتوير', description: 'جدول تخصص السوفتوير', date: 'ديسمبر 2024', size: '2.6 MB' }
+      { 
+        id: 1, 
+        name: 'جدول المحاضرات والسكاشن - الفرقة الثالثة (تخصص نيتورك)', 
+        description: 'جدول تخصص النيتورك للفرقة الثالثة', 
+        date: 'ديسمبر 2024', 
+        size: '2.8 MB',
+        downloadUrl: `${basePath}third_year/network/schedule_2024.pdf`,
+        viewUrl: `${basePath}third_year/network/schedule_2024.pdf`
+      },
+      { 
+        id: 2, 
+        name: 'جدول المحاضرات والسكاشن - الفرقة الثالثة (تخصص سوفتوير)', 
+        description: 'جدول تخصص السوفتوير للفرقة الثالثة', 
+        date: 'ديسمبر 2024', 
+        size: '2.6 MB',
+        downloadUrl: `${basePath}third_year/software/schedule_2024.pdf`,
+        viewUrl: `${basePath}third_year/software/schedule_2024.pdf`
+      }
     ],
     fourth_year: [
-      { id: 1, name: 'جدول النيتورك', description: 'جدول تخصص النيتورك', date: 'ديسمبر 2024', size: '3.2 MB' },
-      { id: 2, name: 'جدول السوفتوير', description: 'جدول تخصص السوفتوير', date: 'ديسمبر 2024', size: '3.0 MB' }
+      { 
+        id: 1, 
+        name: 'جدول المحاضرات والسكاشن - الفرقة الرابعة (تخصص نيتورك)', 
+        description: 'جدول تخصص النيتورك للفرقة الرابعة', 
+        date: 'ديسمبر 2024', 
+        size: '3.2 MB',
+        downloadUrl: `${basePath}fourth_year/network/schedule_2024.pdf`,
+        viewUrl: `${basePath}fourth_year/network/schedule_2024.pdf`
+      },
+      { 
+        id: 2, 
+        name: 'جدول المحاضرات والسكاشن - الفرقة الرابعة (تخصص سوفتوير)', 
+        description: 'جدول تخصص السوفتوير للفرقة الرابعة', 
+        date: 'ديسمبر 2024', 
+        size: '3.0 MB',
+        downloadUrl: `${basePath}fourth_year/software/schedule_2024.pdf`,
+        viewUrl: `${basePath}fourth_year/software/schedule_2024.pdf`
+      }
     ]
+  }
+  
+  // تحديد الجدول المناسب بناءً على السنة والتخصص
+  if (userStore.selectedYear === 'third_year' || userStore.selectedYear === 'fourth_year') {
+    const selectedSchedules = schedules[userStore.selectedYear]
+    return userStore.selectedTrack === 'network' 
+      ? [selectedSchedules[0]]
+      : [selectedSchedules[1]]
   }
   
   return schedules[userStore.selectedYear] || schedules.first_year
@@ -941,22 +1017,88 @@ const getAcademicSupervisors = () => {
 
 // قوائم الطلاب
 const getStudentLists = () => {
+  const basePath = '/pdfs/students/';
+  
   const lists = {
     first_year: [
-      { id: 1, name: 'قائمة الطلاب الكاملة', description: 'جميع طلاب الفرقة الأولى', date: 'ديسمبر 2024', size: '1.5 MB', students: '150' },
-      { id: 2, name: 'قائمة المجموعات', description: 'توزيع الطلاب على المجموعات', date: 'يناير 2025', size: '0.8 MB', students: '150' }
+      { 
+        id: 1, 
+        name: 'قائمة الطلاب الكاملة', 
+        description: 'جميع طلاب الفرقة الأولى', 
+        date: 'ديسمبر 2024', 
+        size: '1.5 MB', 
+        students: '150',
+        downloadUrl: `${basePath}first_year/students_list.pdf`
+      },
+      { 
+        id: 2, 
+        name: 'قائمة المجموعات', 
+        description: 'توزيع الطلاب على المجموعات', 
+        date: 'يناير 2025', 
+        size: '0.8 MB', 
+        students: '150',
+        downloadUrl: `${basePath}first_year/groups_list.pdf`
+      }
     ],
     second_year: [
-      { id: 1, name: 'قائمة طلاب التخصصات', description: 'طلاب الفرقة الثانية حسب التخصص', date: 'ديسمبر 2024', size: '1.8 MB', students: '140' }
+      { 
+        id: 1, 
+        name: 'قائمة طلاب التخصصات', 
+        description: 'طلاب الفرقة الثانية ', 
+        date: 'ديسمبر 2024', 
+        size: '1.8 MB', 
+        students: '140',
+        downloadUrl: `${basePath}second_year/students_list.pdf`
+      }
     ],
     third_year: [
-      { id: 1, name: 'قائمة طلاب النيتورك', description: 'طلاب تخصص النيتورك', date: 'ديسمبر 2024', size: '2.1 MB', students: '70' },
-      { id: 2, name: 'قائمة طلاب السوفتوير', description: 'طلاب تخصص السوفتوير', date: 'ديسمبر 2024', size: '2.0 MB', students: '70' }
+      { 
+        id: 1, 
+        name: 'قائمة طلاب النيتورك', 
+        description: 'طلاب تخصص النيتورك', 
+        date: 'ديسمبر 2024', 
+        size: '2.1 MB', 
+        students: '70',
+        downloadUrl: `${basePath}third_year/network/students_list.pdf`
+      },
+      { 
+        id: 2, 
+        name: 'قائمة طلاب السوفتوير', 
+        description: 'طلاب تخصص السوفتوير', 
+        date: 'ديسمبر 2024', 
+        size: '2.0 MB', 
+        students: '70',
+        downloadUrl: `${basePath}third_year/software/students_list.pdf`
+      }
     ],
     fourth_year: [
-      { id: 1, name: 'قائمة طلاب النيتورك', description: 'طلاب تخصص النيتورك', date: 'ديسمبر 2024', size: '2.3 MB', students: '65' },
-      { id: 2, name: 'قائمة طلاب السوفتوير', description: 'طلاب تخصص السوفتوير', date: 'ديسمبر 2024', size: '2.2 MB', students: '65' }
+      { 
+        id: 1, 
+        name: 'قائمة طلاب النيتورك', 
+        description: 'طلاب تخصص النيتورك', 
+        date: 'ديسمبر 2024', 
+        size: '2.3 MB', 
+        students: '65',
+        downloadUrl: `${basePath}fourth_year/network/students_list.pdf`
+      },
+      { 
+        id: 2, 
+        name: 'قائمة طلاب السوفتوير', 
+        description: 'طلاب تخصص السوفتوير', 
+        date: 'ديسمبر 2024', 
+        size: '2.2 MB', 
+        students: '65',
+        downloadUrl: `${basePath}fourth_year/software/students_list.pdf`
+      }
     ]
+  }
+  
+  // تحديد القوائم المناسبة بناءً على السنة والتخصص
+  if (userStore.selectedYear === 'third_year' || userStore.selectedYear === 'fourth_year') {
+    const selectedLists = lists[userStore.selectedYear]
+    return userStore.selectedTrack === 'network' 
+      ? [selectedLists[0]]
+      : [selectedLists[1]]
   }
   
   return lists[userStore.selectedYear] || lists.first_year
@@ -1254,28 +1396,94 @@ const getTrainingCourses = () => {
   return courses[userStore.selectedYear] || []
 }
 
+// وظيفة للتمرير السلس إلى عنصر
+const smoothScrollToElement = (element) => {
+  if (!element) return;
+  
+  const elementRect = element.getBoundingClientRect();
+  const absoluteElementTop = elementRect.top + window.pageYOffset;
+  const headerHeight = 80; // ارتفاع الهيدر
+  
+  window.scrollTo({
+    top: absoluteElementTop - headerHeight,
+    behavior: 'smooth'
+  });
+}
+
+// وظيفة للتمرير إلى أعلى الصفحة
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
 const selectMenu = (menu) => {
   selectedMenu.value = menu
   selectedSchedule.value = null // إعادة تعيين الجدول المختار
+  
+  // الانتظار حتى يتم تحديث DOM ثم التمرير السلس
+  nextTick(() => {
+    if (contentSection.value) {
+      setTimeout(() => {
+        smoothScrollToElement(contentSection.value);
+      }, 100);
+    }
+  });
 }
 
 const selectSchedule = (schedule) => {
   selectedSchedule.value = schedule
+  
+  // التمرير السلس للجدول المحدد
+  nextTick(() => {
+    const scheduleElement = document.querySelector('.pdf-viewer-container');
+    if (scheduleElement) {
+      setTimeout(() => {
+        smoothScrollToElement(scheduleElement);
+      }, 100);
+    }
+  });
+}
+
+const closeContent = () => {
+  selectedMenu.value = null
+  selectedSchedule.value = null
+  
+  // التمرير السلس لأعلى الصفحة
+  setTimeout(() => {
+    scrollToTop();
+  }, 100);
 }
 
 const downloadPDF = (schedule) => {
-  alert(`جاري تحميل ملف: ${schedule.name}`)
-  // هنا يمكنك إضافة منطق التحميل الفعلي
+  // سيتم التعامل مع التحميل من خلال الرابط
+  console.log(`Downloading: ${schedule.name}`);
 }
 
 const downloadStudentList = (list) => {
-  alert(`جاري تحميل قائمة الطلاب: ${list.name}`)
-  // هنا يمكنك إضافة منطق التحميل الفعلي
+  // سيتم التعامل مع التحميل من خلال الرابط
+  console.log(`Downloading student list: ${list.name}`);
 }
 
 const goHome = () => {
   router.push('/')
 }
+
+// مراقبة التمرير لإظهار/إخفاء زر العودة للأعلى
+const handleScroll = () => {
+  showScrollTop.value = window.scrollY > 500;
+}
+
+// إضافة مستمع حدث التمرير
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+// إزالة مستمع حدث التمرير عند تدمير المكون
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <style scoped>
@@ -1405,6 +1613,22 @@ const goHome = () => {
   text-decoration: none;
   color: inherit;
   position: relative;
+  overflow: hidden;
+}
+
+.menu-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+
+.menu-card:hover::before {
+  left: 100%;
 }
 
 .menu-card:hover {
@@ -1431,6 +1655,25 @@ const goHome = () => {
   color: white;
   font-size: 20px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.menu-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.menu-card:hover .menu-icon::after {
+  transform: translateX(100%);
 }
 
 .menu-content {
@@ -1481,6 +1724,7 @@ const goHome = () => {
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow);
   animation: slideUp 0.3s ease;
+  scroll-margin-top: 100px; /* للمساعدة في التمرير السلس */
 }
 
 .content-header {
@@ -1551,6 +1795,8 @@ const goHome = () => {
   align-items: center;
   gap: 15px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .supervisor-card:hover {
@@ -1573,10 +1819,28 @@ const goHome = () => {
   background-repeat: no-repeat;
   background-color: #f8f9fa;
   border: 3px solid #e67e22;
+  position: relative;
+  overflow: hidden;
 }
 
 .dark-mode .supervisor-avatar {
   background-color: #2c3e50;
+}
+
+.supervisor-avatar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.supervisor-card:hover .supervisor-avatar::after {
+  transform: translateX(100%);
 }
 
 .avatar-placeholder {
@@ -1606,6 +1870,7 @@ const goHome = () => {
   border: 2px solid white;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 2;
 }
 
 .dark-mode .photo-upload-icon {
@@ -1682,6 +1947,23 @@ const goHome = () => {
   font-weight: 600;
   margin-bottom: 25px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.external-link-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+
+.external-link-btn:hover::after {
+  left: 100%;
 }
 
 .external-link-btn:hover {
@@ -1731,6 +2013,7 @@ const goHome = () => {
   border: 1px solid var(--border-color);
   border-radius: 10px;
   overflow: hidden;
+  scroll-margin-top: 100px;
 }
 
 .pdf-header {
@@ -1747,7 +2030,13 @@ const goHome = () => {
   margin: 0;
 }
 
-.download-pdf-btn {
+.pdf-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.download-pdf-btn,
+.view-pdf-btn {
   background: #9b59b6;
   color: white;
   border: none;
@@ -1758,10 +2047,22 @@ const goHome = () => {
   align-items: center;
   gap: 8px;
   transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 14px;
 }
 
-.download-pdf-btn:hover {
+.download-pdf-btn:hover,
+.view-pdf-btn:hover {
   background: #8e44ad;
+  transform: translateY(-2px);
+}
+
+.view-pdf-btn {
+  background: #3498db;
+}
+
+.view-pdf-btn:hover {
+  background: #2980b9;
 }
 
 .pdf-preview {
@@ -1809,6 +2110,23 @@ const goHome = () => {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(155, 89, 182, 0.1), transparent);
+  transition: left 0.7s ease;
+}
+
+.schedule-item:hover::before {
+  left: 100%;
 }
 
 .schedule-item:hover {
@@ -1828,6 +2146,24 @@ const goHome = () => {
   color: #9b59b6;
   font-size: 20px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.schedule-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.schedule-item:hover .schedule-icon::after {
+  transform: translateX(100%);
 }
 
 .schedule-info {
@@ -1881,6 +2217,8 @@ const goHome = () => {
   border-radius: 12px;
   padding: 25px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .academic-supervisor-card:hover {
@@ -1909,10 +2247,28 @@ const goHome = () => {
   background-color: #f8f9fa;
   border: 2px solid #2ecc71;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .dark-mode .supervisor-photo {
   background-color: #2c3e50;
+}
+
+.supervisor-photo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.academic-supervisor-card:hover .supervisor-photo::after {
+  transform: translateX(100%);
 }
 
 .photo-placeholder {
@@ -2026,6 +2382,23 @@ const goHome = () => {
   background: rgba(46, 204, 113, 0.1);
   border-radius: 8px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.schedule-day::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+
+.schedule-day:hover::before {
+  left: 100%;
 }
 
 .schedule-day:hover {
@@ -2096,6 +2469,23 @@ const goHome = () => {
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.telegram-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+}
+
+.telegram-btn:hover::after {
+  left: 100%;
 }
 
 .telegram-btn:hover {
@@ -2116,6 +2506,24 @@ const goHome = () => {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   margin-bottom: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.students-pdf-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(26, 188, 156, 0.1), transparent);
+  transition: left 0.7s ease;
+}
+
+.students-pdf-card:hover::before {
+  left: 100%;
 }
 
 .pdf-card-icon {
@@ -2129,6 +2537,24 @@ const goHome = () => {
   color: #1abc9c;
   font-size: 20px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-card-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.students-pdf-card:hover .pdf-card-icon::after {
+  transform: translateX(100%);
 }
 
 .pdf-card-info {
@@ -2165,10 +2591,12 @@ const goHome = () => {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .pdf-download-btn:hover {
   background: #16a085;
+  transform: scale(1.1);
 }
 
 /* محتوى أعضاء هيئة التدريس */
@@ -2192,6 +2620,23 @@ const goHome = () => {
   align-items: flex-start;
   gap: 15px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.faculty-member-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.7s ease;
+}
+
+.faculty-member-card:hover::before {
+  left: 100%;
 }
 
 .faculty-member-card:hover {
@@ -2214,10 +2659,28 @@ const goHome = () => {
   background-repeat: no-repeat;
   background-color: #f8f9fa;
   border: 3px solid #f39c12;
+  position: relative;
+  overflow: hidden;
 }
 
 .dark-mode .member-avatar {
   background-color: #2c3e50;
+}
+
+.member-avatar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.faculty-member-card:hover .member-avatar::after {
+  transform: translateX(100%);
 }
 
 .avatar-placeholder {
@@ -2247,6 +2710,7 @@ const goHome = () => {
   border: 2px solid white;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 2;
 }
 
 .dark-mode .photo-upload-icon {
@@ -2301,6 +2765,24 @@ const goHome = () => {
   display: flex;
   align-items: flex-start;
   gap: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.7s ease;
+}
+
+.course-card:hover::before {
+  left: 100%;
 }
 
 .course-icon {
@@ -2314,6 +2796,24 @@ const goHome = () => {
   color: white;
   font-size: 20px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.course-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.course-card:hover .course-icon::after {
+  transform: translateX(100%);
 }
 
 .course-info {
@@ -2342,6 +2842,7 @@ const goHome = () => {
   font-weight: 600;
   font-size: 14px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .course-link:hover {
@@ -2390,6 +2891,24 @@ const goHome = () => {
   background: rgba(149, 165, 166, 0.05);
   border: 1px solid rgba(149, 165, 166, 0.2);
   border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.instruction-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.7s ease;
+}
+
+.instruction-item:hover::before {
+  left: 100%;
 }
 
 .instruction-icon {
@@ -2403,6 +2922,24 @@ const goHome = () => {
   color: white;
   font-size: 20px;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.instruction-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.instruction-item:hover .instruction-icon::after {
+  transform: translateX(100%);
 }
 
 .instruction-content {
@@ -2464,6 +3001,63 @@ const goHome = () => {
   }
 }
 
+/* زر العودة للأعلى */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 99;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background: var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* تأثير الانعكاس للأيقونات */
+.reflection-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.reflection-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.reflection-effect:hover::after {
+  transform: translateX(100%);
+}
+
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
@@ -2523,6 +3117,13 @@ const goHome = () => {
   .member-info {
     text-align: center;
   }
+  
+  .scroll-top-btn {
+    bottom: 20px;
+    left: 20px;
+    width: 45px;
+    height: 45px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2547,6 +3148,13 @@ const goHome = () => {
   .member-avatar {
     width: 60px;
     height: 60px;
+  }
+  
+  .scroll-top-btn {
+    bottom: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
   }
 }
 </style>
