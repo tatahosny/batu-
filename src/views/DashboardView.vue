@@ -118,8 +118,15 @@
               
               <div class="supervisors-grid">
                 <div class="supervisor-card" v-for="supervisor in getServiceSupervisors()" :key="supervisor.id">
-                  <div class="supervisor-avatar">
-                    <i class="fas fa-user-cog"></i>
+                  <div class="supervisor-avatar-container">
+                    <div class="supervisor-avatar" :style="{ backgroundImage: `url(${supervisor.photo})` }">
+                      <div v-if="!supervisor.photo" class="avatar-placeholder">
+                        <i class="fas fa-user-cog"></i>
+                      </div>
+                    </div>
+                    <div class="photo-upload-icon" v-if="!supervisor.photo">
+                      <i class="fas fa-camera"></i>
+                    </div>
                   </div>
                   <div class="supervisor-info">
                     <h4>{{ supervisor.name }}</h4>
@@ -490,13 +497,15 @@ const getServiceSupervisors = () => {
         id: 1,
         name: 'م/ عمر الجمل',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: 313'
+        office: 'المكتب: 313',
+        photo: '/images/supervisors/omar.png'
       },
       {
         id: 2,
         name: 'م/ يوسف محمد',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: 313'
+        office: 'المكتب: 313',
+        photo: '/images/supervisors/youssef-mohamed.png'
       }
     ],
     second_year: [
@@ -504,13 +513,15 @@ const getServiceSupervisors = () => {
         id: 1,
         name: 'م/ محمد عادل',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: undefined'
+        office: 'المكتب: 210',
+        photo: '/images/supervisors/mohamed-adel.png'
       },
       {
         id: 2,
         name: 'م/ عبدالرحمن النقيدي',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: undefined'
+        office: 'المكتب: 210',
+        photo: '/images/supervisors/abdelrahman-nagidy.png'
       }
     ],
     third_year: [
@@ -518,7 +529,8 @@ const getServiceSupervisors = () => {
         id: 1,
         name: 'م/ احمد الفقي',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: undefined'
+        office: 'المكتب: 306',
+        photo: '/images/supervisors/ahmed-elfeky.png'
       }
     ],
     fourth_year: [
@@ -526,19 +538,22 @@ const getServiceSupervisors = () => {
         id: 1,
         name: 'م/ محمود الغنيمي',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: غرفة 313'
+        office: 'المكتب: غرفة 313',
+        photo: '/images/supervisors/mahmoud-elghonimy.png'
       },
       {
         id: 2,
         name: 'م/ عمر الجمل',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: 313'
+        office: 'المكتب: 313',
+        photo: '/images/supervisors/omar.png'
       },
       {
         id: 3,
         name: 'م/ يوسف محمد',
         title: 'عضو هيئة تدريس',
-        office: 'المكتب: 313'
+        office: 'المكتب: 313',
+        photo: '/images/supervisors/youssef-mohamed.png'
       }
     ]
   }
@@ -579,7 +594,7 @@ const getAcademicSupervisors = () => {
         name: 'ا.م.د/اشرف عبد العزيز طه',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 311',
-        photo: '/images/professors/ashraf-abdelaziz.jpg',
+        photo: '/images/professors/ashraf-abdelaziz.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,7,8' },
           { day: 'الاثنين', periods: '1,2,7,8' },
@@ -592,7 +607,7 @@ const getAcademicSupervisors = () => {
         name: 'د.هيمن السيد حسن',
         title: 'عضو هيئة تدريس',
         office: 'مكتب 302',
-        photo: '/images/professors/haymen-sayed.jpg',
+        photo: '/images/professors/haymen-sayed.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4' },
           { day: 'الاثنين', periods: '5,6,7,8' },
@@ -605,7 +620,7 @@ const getAcademicSupervisors = () => {
         name: 'د.مي محمد',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 302',
-        photo: '/images/professors/may-mohamed.jpg',
+        photo: '/images/professors/may-mohamed.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4' },
           { day: 'الاثنين', periods: '1,2,3,4,5,6' },
@@ -618,7 +633,7 @@ const getAcademicSupervisors = () => {
         name: 'م.امانى السيد الديب',
         title: 'محاضر مساعد',
         office: 'غرفة A102',
-        photo: '/images/professors/amany-sayed.jpg',
+        photo: '/images/professors/amany-sayed.png',
         schedule: [
           { day: 'السبت', periods: '5,6' },
           { day: 'الأحد', periods: '1,2,3,4' },
@@ -631,7 +646,7 @@ const getAcademicSupervisors = () => {
         name: 'م.مصطفى محمد',
         title: 'مساعد تدريس',
         office: 'مكتب 306',
-        photo: '/images/professors/mostafa-mohamed.jpg',
+        photo: '/images/professors/mostafa-mohamed.png',
         schedule: [
           { day: 'الأحد', periods: '7,8' },
           { day: 'الاثنين', periods: '3,4' },
@@ -644,7 +659,7 @@ const getAcademicSupervisors = () => {
         name: 'م.رجب حسن',
         title: 'مساعد تدريس',
         office: 'مكتب 306',
-        photo: '/images/professors/ragab-hassan.jpg',
+        photo: '/images/professors/ragab-hassan.png',
         schedule: [
           { day: 'الاثنين', periods: '3,4' },
           { day: 'الثلاثاء', periods: '5,6,7,8,9,10' }
@@ -655,7 +670,7 @@ const getAcademicSupervisors = () => {
         name: 'م.عبد الفتاح مراد',
         title: 'مساعد تدريس',
         office: 'مكتب 306',
-        photo: '/images/professors/abdel-fattah-murad.jpg',
+        photo: '/images/professors/abdel-fattah-murad.png',
         schedule: [
           { day: 'السبت', periods: '3,4,5,8,9,10' },
           { day: 'الأحد', periods: '1,2,6,7,9,10' },
@@ -670,7 +685,7 @@ const getAcademicSupervisors = () => {
         name: 'د/نهال الازلي',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 210',
-        photo: '/images/professors/nahal-azaly.jpg',
+        photo: '/images/professors/nahal-azaly.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4,5,6' },
           { day: 'الاثنين', periods: '1,2,3,4' },
@@ -684,7 +699,7 @@ const getAcademicSupervisors = () => {
         name: 'د/ دينا عبد الحفيظ',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 307',
-        photo: '/images/professors/dina-abdelhafeez.jpg',
+        photo: '/images/professors/dina-abdelhafeez.png',
         schedule: [
           { day: 'الأحد', periods: '5,6,7,8' },
           { day: 'الاثنين', periods: '3,4' }
@@ -695,7 +710,7 @@ const getAcademicSupervisors = () => {
         name: 'د/ بسنت طلبه',
         title: 'عضو هيئة تدريس',
         office: 'مكتب 302',
-        photo: '/images/professors/basant-talab.jpg',
+        photo: '/images/professors/basant-talab.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4,5,6' },
           { day: 'الاثنين', periods: '3,4,5,6' },
@@ -708,7 +723,7 @@ const getAcademicSupervisors = () => {
         name: 'م.اسراء محسن',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/esraa-mohsen.jpg',
+        photo: '/images/professors/esraa-mohsen.png',
         schedule: [
           { day: 'الأحد', periods: '5-10' },
           { day: 'الاثنين', periods: '1-2 و 5-6' },
@@ -721,7 +736,7 @@ const getAcademicSupervisors = () => {
         name: 'م.منة الله اشرف',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/menna-allah-ashraf.jpg',
+        photo: '/images/professors/menna-allah-ashraf.png',
         schedule: [
           { day: 'السبت', periods: '3,4,9,10' },
           { day: 'الأحد', periods: '5,6,9,10' },
@@ -733,7 +748,7 @@ const getAcademicSupervisors = () => {
         name: 'م.مصطفى صبحي منسي',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/mostafa-sabry.jpg',
+        photo: '/images/professors/mostafa-sabry.png',
         schedule: [
           { day: 'السبت', periods: '5,6' },
           { day: 'الأحد', periods: 'جميع الفترات' },
@@ -747,7 +762,7 @@ const getAcademicSupervisors = () => {
         name: 'م.اسامة محمد السمنودي',
         title: 'محاضر مساعد',
         office: 'غرفة 114',
-        photo: '/images/professors/osama-samnoudy.jpg',
+        photo: '/images/professors/osama-samnoudy.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4' },
           { day: 'الاثنين', periods: '4' },
@@ -762,7 +777,7 @@ const getAcademicSupervisors = () => {
         name: 'د/ معتز حسن خليل',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 307',
-        photo: '/images/professors/moataz-hassan.jpg',
+        photo: '/images/professors/moataz-hassan.png',
         schedule: [
           { day: 'السبت', periods: '3,4,5,6,7' },
           { day: 'الأربعاء', periods: '1,2,5,6,7' }
@@ -773,7 +788,7 @@ const getAcademicSupervisors = () => {
         name: 'د/ ايمان شوقي عبدالفتاح',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 206',
-        photo: '/images/professors/eman-shawky-abdelfattah.jpg',
+        photo: '/images/professors/eman-shawky-abdelfattah.png',
         schedule: [
           { day: 'الأحد', periods: '1,2,3,4,5,6,7' },
           { day: 'الاثنين', periods: '1,2,3,4,5,6,7' },
@@ -786,7 +801,7 @@ const getAcademicSupervisors = () => {
         name: 'د/ رضوى راضي',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 302',
-        photo: '/images/professors/radwa-rady.jpg',
+        photo: '/images/professors/radwa-rady.png',
         schedule: [
           { day: 'السبت', periods: '1,2' },
           { day: 'الأحد', periods: '1,2,3,4,5,6' },
@@ -799,7 +814,7 @@ const getAcademicSupervisors = () => {
         name: 'م/ محمد عادل بدير خاطر',
         title: 'مساعد تدريس',
         office: 'IT',
-        photo: '/images/professors/mohamed-adel.jpg',
+        photo: '/images/professors/mohamed-adel.png',
         schedule: [
           { day: 'الأحد', periods: '3,4' },
           { day: 'الاثنين', periods: '1,2,3,4,5' },
@@ -811,7 +826,7 @@ const getAcademicSupervisors = () => {
         name: 'م/ حازم حمدي احمد',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/hazem-hamdy.jpg',
+        photo: '/images/professors/hazem-hamdy.png',
         schedule: [
           { day: 'الأحد', periods: '5,6,7,8' },
           { day: 'الاثنين', periods: '1,2' },
@@ -824,7 +839,7 @@ const getAcademicSupervisors = () => {
         name: 'م/ مريم حسام مجدي',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/mariam-hossam.jpg',
+        photo: '/images/professors/mariam-hossam.png',
         schedule: [
           { day: 'السبت', periods: '6,10' },
           { day: 'الأحد', periods: '5,6' },
@@ -837,7 +852,7 @@ const getAcademicSupervisors = () => {
         name: 'م/ هبه الله احمد السيد الشوربجي',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/heba-allah.jpg',
+        photo: '/images/professors/heba-allah.png',
         schedule: [
           { day: 'السبت', periods: '3,4' },
           { day: 'الأحد', periods: 'كل الفترات' }
@@ -850,7 +865,7 @@ const getAcademicSupervisors = () => {
         name: 'د. علي أحمد عبدالفتاح العبد',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 302',
-        photo: '/images/professors/ali-ahmed.jpg',
+        photo: '/images/professors/ali-ahmed.png',
         schedule: [
           { day: 'السبت', periods: '5,6,7,8' },
           { day: 'الأحد', periods: '1,2,3,4,5,6' },
@@ -863,7 +878,7 @@ const getAcademicSupervisors = () => {
         name: 'د/محمد عبد الفتاح على',
         title: 'عضو هيئة تدريس',
         office: 'غرفة 307',
-        photo: '/images/professors/mohamed-abdelfattah.jpg',
+        photo: '/images/professors/mohamed-abdelfattah.png',
         schedule: [
           { day: 'السبت', periods: '5,6' },
           { day: 'الثلاثاء', periods: '1,2,3,4,5,6' }
@@ -874,7 +889,7 @@ const getAcademicSupervisors = () => {
         name: 'م.اسراء عبدالرسول',
         title: 'محاضر مساعد',
         office: 'غرفة 306',
-        photo: '/images/professors/esraa-abdelrasoul.jpg',
+        photo: '/images/professors/esraa-abdelrasoul.png',
         schedule: [
           { day: 'السبت', periods: '1,2' },
           { day: 'الأحد', periods: '1,2,3,4' },
@@ -886,7 +901,7 @@ const getAcademicSupervisors = () => {
         name: 'م.غادة احمد عارف البودي',
         title: 'مدرس مساعد',
         office: 'غرفة 306',
-        photo: '/images/professors/ghada-ahmed.jpg',
+        photo: '/images/professors/ghada-ahmed.png',
         schedule: [
           { day: 'الأحد', periods: '3,4' },
           { day: 'الاثنين', periods: '1,2,3,4,5,6,7,8' },
@@ -898,7 +913,7 @@ const getAcademicSupervisors = () => {
         name: 'م.بلال عادل محمد',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/bilal-adil.jpg',
+        photo: '/images/professors/bilal-adil.png',
         schedule: [
           { day: 'السبت', periods: '1,2,7,8' },
           { day: 'الأحد', periods: '1,2,3,4' },
@@ -911,7 +926,7 @@ const getAcademicSupervisors = () => {
         name: 'م.احمد كامل احمد يونس',
         title: 'مساعد تدريس',
         office: 'غرفة 306',
-        photo: '/images/professors/ahmed-kamel.jpg',
+        photo: '/images/professors/ahmed-kamel.png',
         schedule: [
           { day: 'الأحد', periods: '7,8' },
           { day: 'الاثنين', periods: '1,2,3,4,5,6,7,8' },
@@ -956,49 +971,49 @@ const getFacultyMembers = () => {
         name: 'د/محمد القديم', 
         course: 'Technical English 2', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/mohamed-elkadeem.jpg'
+        photo: '/images/professors/mohamed-elkadeem.png'
       },
       { 
         id: 2, 
         name: 'د/محمد الشاذلي', 
         course: 'Mathematics 2', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/mohamed-elshazly.jpg'
+        photo: '/images/professors/mohamed-elshazly.png'
       },
       { 
         id: 3, 
         name: 'د/أسامة النحاس', 
         course: 'Intro To IOT & Connecting Things', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/osama-elnahas.jpg'
+        photo: '/images/professors/osama-elnahas.png'
       },
       { 
         id: 4, 
         name: 'د/بسنت طلبة', 
         course: 'Intro To IOT & Connecting Things', 
         title: 'أستاذة المادة',
-        photo: '/images/professors/basant-talab.jpg'
+        photo: '/images/professors/basant-talab.png'
       },
       { 
         id: 5, 
         name: 'د/هيمن السيد', 
         course: 'Microsoft Office', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/haymen-sayed.jpg'
+        photo: '/images/professors/haymen-sayed.png'
       },
       { 
         id: 6, 
         name: 'د/اشرف عبد العزيز', 
         course: 'Cyber Security Essentials', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/ashraf-abdelaziz.jpg'
+        photo: '/images/professors/ashraf-abdelaziz.png'
       },
       { 
         id: 7, 
         name: 'د/غادة', 
         course: 'Programming Essentials in C', 
         title: 'أستاذة المادة',
-        photo: '/images/professors/ghada.jpg'
+        photo: '/images/professors/ghada.png'
       }
     ],
     second_year: [
@@ -1007,35 +1022,35 @@ const getFacultyMembers = () => {
         name: 'د/اشرف عبد العزيز', 
         course: 'Web Programming 2', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/ashraf-abdelaziz.jpg'
+        photo: '/images/professors/ashraf-abdelaziz.png'
       },
       { 
         id: 2, 
         name: 'د/رضوى', 
         course: 'Java Programming', 
         title: 'أستاذة المادة',
-        photo: '/images/professors/radwa.jpg'
+        photo: '/images/professors/radwa-rady.png'
       },
       { 
         id: 3, 
         name: 'د/ايمان شوقى', 
         course: 'Data Structure', 
         title: 'أستاذة المادة',
-        photo: '/images/professors/eman-shawky.jpg'
+        photo: '/images/professors/eman-shawky.png'
       },
       { 
         id: 4, 
-        name: 'د/احمد عبد الفتاح', 
+        name: 'د/على عبد الفتاح', 
         course: 'CCNA', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/ahmed-abdelfattah.jpg'
+        photo: '/images/professors/ali-abdelfattah.png'
       },
       { 
         id: 5, 
         name: 'د/على عبد الفتاح', 
         course: 'DataBase Programming', 
         title: 'أستاذ المادة',
-        photo: '/images/professors/ali-abdelfattah.jpg'
+        photo: '/images/professors/ali-abdelfattah.png'
       }
     ],
     third_year: {
@@ -1045,42 +1060,42 @@ const getFacultyMembers = () => {
           name: 'د/اية ابراهيم', 
           course: 'Network Programming', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/aya-ibrahim.jpg'
+          photo: '/images/professors/aya-ibrahim.png'
         },
         { 
           id: 2, 
           name: 'د/اية ابراهيم', 
           course: 'Network Programming', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/aya-ibrahim.jpg'
+          photo: '/images/professors/aya-ibrahim.png'
         },
         { 
           id: 3, 
           name: 'د/هيمن السيد', 
           course: 'Software Engineering', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/haymen-sayed.jpg'
+          photo: '/images/professors/haymen-sayed.png'
         },
         { 
           id: 4, 
           name: 'د/اسامة النحاس', 
           course: 'Embedded Systems', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/osama-elnahas.jpg'
+          photo: '/images/professors/osama-elnahas.png'
         },
         { 
           id: 5, 
           name: 'د/ايمان شوقى', 
           course: 'CCNA Security', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/eman-shawky.jpg'
+          photo: '/images/professors/eman-shawky.png'
         },
         { 
           id: 6, 
           name: 'د/ايمان شوقى', 
           course: 'CCNA 3', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/eman-shawky.jpg'
+          photo: '/images/professors/eman-shawky.png'
         }
       ],
       software: [
@@ -1089,42 +1104,42 @@ const getFacultyMembers = () => {
           name: 'د/اية ابراهيم', 
           course: 'Network Programming', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/aya-ibrahim.jpg'
+          photo: '/images/professors/aya-ibrahim.png'
         },
         { 
           id: 2, 
           name: 'د/اسامة النحاس', 
           course: 'Embedded Systems', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/osama-elnahas.jpg'
+          photo: '/images/professors/osama-elnahas.png'
         },
         { 
           id: 3, 
           name: 'د/هيمن السيد', 
           course: 'Software Engineering', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/haymen-sayed.jpg'
+          photo: '/images/professors/haymen-sayed.png'
         },
         { 
           id: 4, 
           name: 'د/محمد الصادق', 
           course: 'Algorithms', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-elsadek.jpg'
+          photo: '/images/professors/mohamed-elsadek.png'
         },
         { 
           id: 5, 
           name: 'د/محمد عبد الفتاح', 
           course: 'Advanced C++', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-abdelfattah.jpg'
+          photo: '/images/professors/mohamed-abdelfattah.png'
         },
         { 
           id: 6, 
           name: 'د/دينا عبد الحفيظ', 
           course: 'Mobile', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/dina-abdelhafeez.jpg'
+          photo: '/images/professors/dina-abdelhafeez.png'
         }
       ]
     },
@@ -1135,42 +1150,42 @@ const getFacultyMembers = () => {
           name: 'د/محمد سليم', 
           course: 'CCNP Switch', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-salim.jpg'
+          photo: '/images/professors/mohamed-salim.png'
         },
         { 
           id: 2, 
           name: 'د/محمد سليم', 
           course: 'CCNP Route', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-salim.jpg'
+          photo: '/images/professors/mohamed-salim.png'
         },
         { 
           id: 3, 
-          name: 'د/اسامة النحاس / د/بسنت طلبة', 
+          name: 'د/اسامة النحاس ', 
           course: 'IOT Security', 
           title: 'أساتذة المادة',
-          photo: '/images/professors/osama-basant.jpg'
+          photo: '/images/professors/osama-elnahas.png'
         },
         { 
           id: 4, 
           name: 'د/ محمد عبد الفتاح', 
           course: 'Big Data & Analytic', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-abdelfattah.jpg'
+          photo: '/images/professors/mohamed-abdelfattah.png'
         },
         { 
           id: 5, 
           name: 'غير محدد', 
           course: 'Entrepreneurship', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/default.jpg'
+          photo: '/images/professors/default.png'
         },
         { 
           id: 6, 
           name: 'د/محمد عبد الفتاح', 
           course: 'Machine Learning', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-abdelfattah.jpg'
+          photo: '/images/professors/mohamed-abdelfattah.png'
         }
       ],
       software: [
@@ -1179,42 +1194,42 @@ const getFacultyMembers = () => {
           name: 'د/محمد عبد الفتاح', 
           course: 'Big Data & Analytics', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-abdelfattah.jpg'
+          photo: '/images/professors/mohamed-abdelfattah.png'
         },
         { 
           id: 2, 
           name: 'د/محمد عبد الفتاح', 
           course: 'Machine Learning', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/mohamed-abdelfattah.jpg'
+          photo: '/images/professors/mohamed-abdelfattah.png'
         },
         { 
           id: 3, 
-          name: 'د/اسامة النحاس / د/بسنت طلبة', 
+          name: 'د/اسامة النحاس', 
           course: 'IOT Security', 
           title: 'أساتذة المادة',
-          photo: '/images/professors/osama-basant.jpg'
+          photo: '/images/professors/osama-elnahas.png'
         },
         { 
           id: 4, 
           name: 'د/رضوى رضا', 
           course: 'Windows Programming 2', 
           title: 'أستاذة المادة',
-          photo: '/images/professors/radwa-reda.jpg'
+          photo: '/images/professors/radwa-reda.png'
         },
         { 
           id: 5, 
           name: 'غير محدد', 
           course: 'Entrepreneurship', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/default.jpg'
+          photo: '/images/professors/default.png'
         },
         { 
           id: 6, 
           name: 'د/ اسامة النحاس', 
           course: 'Robotics', 
           title: 'أستاذ المادة',
-          photo: '/images/professors/osama-elnahas.jpg'
+          photo: '/images/professors/osama-elnahas.png'
         }
       ]
     }
@@ -1508,7 +1523,7 @@ const goHome = () => {
   padding: 25px;
 }
 
-/* محتوى خدمة الإشراف */
+/* محتوى خاص بخدمة الإشراف */
 .service-supervision-content h3 {
   color: var(--primary-color);
   margin-bottom: 10px;
@@ -1522,7 +1537,7 @@ const goHome = () => {
 
 .supervisors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   margin-bottom: 25px;
 }
@@ -1530,29 +1545,86 @@ const goHome = () => {
 .supervisor-card {
   background: rgba(230, 126, 34, 0.05);
   border: 1px solid rgba(230, 126, 34, 0.2);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.supervisor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(230, 126, 34, 0.15);
+}
+
+.supervisor-avatar-container {
+  position: relative;
+  flex-shrink: 0;
 }
 
 .supervisor-avatar {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f8f9fa;
+  border: 3px solid #e67e22;
+}
+
+.dark-mode .supervisor-avatar {
+  background-color: #2c3e50;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e67e22, #d35400);
+  color: white;
+  font-size: 28px;
+}
+
+.photo-upload-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
   background: #e67e22;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 24px;
-  flex-shrink: 0;
+  font-size: 12px;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .photo-upload-icon {
+  border-color: #2c3e50;
+}
+
+.photo-upload-icon:hover {
+  background: #d35400;
+  transform: scale(1.1);
+}
+
+.supervisor-info {
+  flex: 1;
 }
 
 .supervisor-info h4 {
   color: var(--primary-color);
   margin-bottom: 5px;
+  font-size: 16px;
 }
 
 .supervisor-role {
@@ -2454,6 +2526,11 @@ const goHome = () => {
 }
 
 @media (max-width: 480px) {
+  .supervisor-avatar {
+    width: 60px;
+    height: 60px;
+  }
+  
   .supervisor-photo {
     width: 100px;
     height: 100px;
