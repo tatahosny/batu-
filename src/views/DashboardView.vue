@@ -1017,7 +1017,10 @@ const getAcademicSupervisors = () => {
 
 // قوائم الطلاب
 const getStudentLists = () => {
-  const basePath = '/pdfs/students/';
+  // المسار الصحيح للـ PDFs
+  const basePath = process.env.NODE_ENV === 'production' 
+    ? '/academic-dashboard/pdfs/students/'
+    : '/pdfs/students/';
   
   const lists = {
     first_year: [
@@ -1028,7 +1031,7 @@ const getStudentLists = () => {
         date: 'ديسمبر 2024', 
         size: '1.5 MB', 
         students: '150',
-        downloadUrl: `${basePath}first_year/students_list.pdf`
+        downloadUrl: `${basePath}first_year/students_list.pdf` // تأكد من أن الملف موجود بهذا المسار
       },
       { 
         id: 2, 
@@ -1044,7 +1047,7 @@ const getStudentLists = () => {
       { 
         id: 1, 
         name: 'قائمة طلاب التخصصات', 
-        description: 'طلاب الفرقة الثانية ', 
+        description: 'طلاب الفرقة الثانية', 
         date: 'ديسمبر 2024', 
         size: '1.8 MB', 
         students: '140',
