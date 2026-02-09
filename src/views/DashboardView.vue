@@ -417,7 +417,7 @@
     <!-- الفوتر -->
     <footer class="dashboard-footer">
       <div class="footer-content">
-        <p>نظام الإدارة الأكاديمي © 2024 | {{ getCurrentSelection() }}</p>
+        <p>نظام الإدارة الأكاديميcreated  by Mostafa Hosny © 2026</p>
         <div class="footer-links">
           <span>الإصدار 1.0.0</span>
           <span>•</span>
