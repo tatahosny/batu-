@@ -1,80 +1,21 @@
 <template>
-  <div class="home-view">
-    <div class="container">
-      <!-- الهيدر البسيط -->
-      <header class="main-header">
-        <div class="logo-section">
-          <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-          </div>
-          <div class="title-section">
-            <h1>نظام الإدارة الأكاديمي</h1>
-            <p class="subtitle">مرحباً بك في نظام إدارة الطلاب</p>
-          </div>
+  <div class="year-selection">
+    <div class="years-grid">
+      <div
+        v-for="year in yearsData"
+        :key="year.id"
+        :class="['year-card', { 'selected': userStore.selectedYear === year.value }]"
+        @click="selectYear(year)"
+      >
+        <div class="year-icon">
+          <i :class="getYearIcon(year.id)"></i>
         </div>
+        <h3 class="year-name">{{ year.name }}</h3>
+        <p class="year-description">{{ getYearDescription(year.id) }}</p>
         
-        <div class="theme-toggle-section">
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <!-- محتوى الصفحة -->
-      <div class="main-content">
-        <!-- بطاقة إدخال الاسم -->
-        <div class="card greeting-card">
-          <div class="card-header">
-            <h2><i class="fas fa-user"></i> إدخال الاسم</h2>
-          </div>
-          <div class="card-body">
-            <UserGreeting />
-          </div>
-        </div>
-
-        <!-- بطاقة اختيار الفرقة -->
-        <div class="card year-card" v-if="userStore.userName">
-          <div class="card-header">
-            <h2><i class="fas fa-layer-group"></i> اختيار الفرقة الدراسية</h2>
-          </div>
-          <div class="card-body">
-            <YearDropdown />
-          </div>
-        </div>
-
-        <!-- بطاقة اختيار التخصص -->
-        <div class="card specialization-card" v-if="showSpecialization">
-          <div class="card-header">
-            <h2><i class="fas fa-code-branch"></i> اختيار التخصص</h2>
-          </div>
-          <div class="card-body">
-            <SpecializationDropdown />
-          </div>
-        </div>
-
-        <!-- مؤشر التقدم -->
-        <div class="progress-section" v-if="userStore.userName">
-          <div class="progress-info">
-            <span>مراحل التسجيل:</span>
-            <span class="progress-percentage">{{ Math.round(progressPercentage) }}%</span>
-          </div>
-          <div class="progress-bar">
-            <div 
-              class="progress-fill" 
-              :style="{ width: progressPercentage + '%' }"
-            ></div>
-          </div>
-          <div class="progress-steps">
-            <span class="step" :class="{ 'active': userStore.userName }">إدخال الاسم</span>
-            <span class="step" :class="{ 'active': userStore.selectedYear }">اختيار الفرقة</span>
-            <span class="step" :class="{ 'active': isSpecializationComplete }">اختيار التخصص</span>
-          </div>
-        </div>
-
-        <!-- زر الانتقال للقوائم -->
-        <div class="action-section" v-if="isReadyForDashboard">
-          <button @click="goToDashboard" class="continue-btn">
-            <i class="fas fa-arrow-left"></i>
-            الانتقال إلى القوائم الرئيسية
-          </button>
+        <div v-if="userStore.selectedYear === year.value" class="selected-badge">
+          <i class="fas fa-check"></i>
+          مختارة
         </div>
       </div>
     </div>
@@ -82,291 +23,121 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '../stores/user'
-import ThemeToggle from '../components/Welcome/ThemeToggle.vue'
-import UserGreeting from '../components/Welcome/UserGreeting.vue'
-import YearDropdown from '../components/Selection/YearDropdown.vue'
-import SpecializationDropdown from '../components/Selection/SpecializationDropdown.vue'
+import { ref } from 'vue'
+import { useUserStore } from '../../stores/user'
 
-const router = useRouter()
 const userStore = useUserStore()
 
-// هل يحتاج تخصص؟
-const needsSpecialization = computed(() => {
-  return ['third_year', 'fourth_year'].includes(userStore.selectedYear)
-})
+const yearsData = ref([
+  { id: 1, name: 'الفرقة الأولى', value: 'first_year' },
+  { id: 2, name: 'الفرقة الثانية', value: 'second_year' },
+  { id: 3, name: 'الفرقة الثالثة', value: 'third_year' },
+  { id: 4, name: 'الفرقة الرابعة', value: 'fourth_year' }
+])
 
-// هل يظهر اختيار التخصص؟
-const showSpecialization = computed(() => {
-  return userStore.userName && userStore.selectedYear && needsSpecialization.value
-})
+const selectYear = (year) => {
+  userStore.setSelectedYear(year.value)
+}
 
-// هل اكتمل اختيار التخصص؟
-const isSpecializationComplete = computed(() => {
-  if (!needsSpecialization.value) return true
-  return !!userStore.selectedSpecialization
-})
+const getYearIcon = (yearId) => {
+  const icons = {
+    1: 'fas fa-star',
+    2: 'fas fa-moon',
+    3: 'fas fa-sun',
+    4: 'fas fa-gem'
+  }
+  return icons[yearId]
+}
 
-// حساب نسبة التقدم
-const progressPercentage = computed(() => {
-  if (!userStore.userName) return 0
-  if (!userStore.selectedYear) return 33
-  if (!isSpecializationComplete.value) return 66
-  return 100
-})
-
-// هل جاهز للداشبورد؟
-const isReadyForDashboard = computed(() => {
-  return userStore.userName && userStore.selectedYear && isSpecializationComplete.value
-})
-
-const goToDashboard = () => {
-  router.push('/dashboard')
+const getYearDescription = (yearId) => {
+  const descriptions = {
+    1: 'المواد الأساسية والتأسيسية',
+    2: 'المواد المتقدمة والتخصصية',
+    3: 'المواد التطبيقية والمشاريع',
+    4: 'مشروع التخرج والبحث العلمي'
+  }
+  return descriptions[yearId]
 }
 </script>
 
 <style scoped>
-.home-view {
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-color) 0%, #f0f7ff 100%);
-  padding: 20px;
+.year-selection {
+  width: 100%;
 }
 
-.dark-mode .home-view {
-  background: linear-gradient(135deg, var(--bg-color) 0%, #0f1b2e 100%);
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding: 20px;
-  background: var(--card-bg);
-  border-radius: 15px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
+.years-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
-.logo {
+.year-card {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.year-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.year-card.selected {
+  border-color: var(--accent-color);
+  background: rgba(46, 204, 113, 0.05);
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+}
+
+.year-icon {
   width: 60px;
   height: 60px;
+  margin: 0 auto 15px;
   background: linear-gradient(135deg, var(--accent-color), #2ecc71);
-  border-radius: 15px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 28px;
-}
-
-.title-section h1 {
-  color: var(--primary-color);
-  margin-bottom: 5px;
   font-size: 24px;
 }
 
-.title-section .subtitle {
+.year-name {
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.year-description {
   color: var(--text-color);
   opacity: 0.8;
   font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
 }
 
-.main-content {
-  display: grid;
-  gap: 30px;
-}
-
-.card {
-  background: var(--card-bg);
-  border-radius: 15px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-}
-
-.card-header {
-  padding: 20px 25px;
-  border-bottom: 1px solid var(--border-color);
-  background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), transparent);
-}
-
-.card-header h2 {
-  color: var(--primary-color);
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.card-body {
-  padding: 25px;
-}
-
-.greeting-card {
-  animation: fadeIn 0.5s ease;
-}
-
-.year-card {
-  animation: fadeIn 0.5s ease 0.2s backwards;
-}
-
-.specialization-card {
-  animation: fadeIn 0.5s ease 0.4s backwards;
-}
-
-.progress-section {
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
-  animation: fadeIn 0.5s ease 0.6s backwards;
-}
-
-.progress-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.progress-percentage {
-  color: var(--accent-color);
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.progress-bar {
-  height: 8px;
-  background: var(--border-color);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 15px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-color), #2ecc71);
-  border-radius: 4px;
-  transition: width 0.5s ease;
-}
-
-.progress-steps {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-}
-
-.progress-steps::before {
-  content: '';
+.selected-badge {
   position: absolute;
-  top: -23px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--border-color);
-  z-index: 1;
-}
-
-.step {
-  position: relative;
-  z-index: 2;
-  background: var(--border-color);
-  color: var(--text-color);
-  opacity: 0.7;
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 12px;
-  transition: all 0.3s ease;
-}
-
-.step.active {
+  top: 15px;
+  left: 15px;
   background: var(--accent-color);
   color: white;
-  opacity: 1;
-  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
-}
-
-.action-section {
-  text-align: center;
-  animation: fadeIn 0.5s ease 0.8s backwards;
-}
-
-.continue-btn {
-  background: linear-gradient(135deg, var(--accent-color), #2ecc71);
-  color: white;
-  border: none;
-  padding: 15px 40px;
-  border-radius: 25px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-}
-
-.continue-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
-}
-
-.continue-btn:active {
-  transform: translateY(0);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  gap: 5px;
 }
 
 @media (max-width: 768px) {
-  .main-header {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-  
-  .logo-section {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .continue-btn {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .progress-steps {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .progress-steps::before {
-    display: none;
+  .years-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
